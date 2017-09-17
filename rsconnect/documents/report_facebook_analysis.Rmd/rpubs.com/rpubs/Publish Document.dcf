@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/309041/a7e02f0bbd0f44bfbb6ce2c44b613dfa
+bundleId: https://api.rpubs.com/api/v1/document/309041/a7e02f0bbd0f44bfbb6ce2c44b613dfa
+url: http://rpubs.com/fabiorocha5150/309041
+when: 1505691421.19501

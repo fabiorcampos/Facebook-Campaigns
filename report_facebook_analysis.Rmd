@@ -1,0 +1,91 @@
+---
+title: "Regression model for Facebook Campaigns analysis"
+author: "Fábio Rocha Campos"
+date: "17 de setembro de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Objective
+
+Script that I use to check and predict the cost and results of Facebook Campaigns. The campaigns are based upon "click in external links", so the results that I expect are how much do I need to invest in order to get some numbers of clicks.
+
+```{r}
+### Load data
+df = read.csv("./data/cmkbr_full.csv", header = TRUE, sep = ",")
+```
+
+### Pre processing
+
+```{r, echo=FALSE}
+### prepare data
+names <- df$Nome.da.campanha
+ID <- df$ID
+df <- df[,-c(1:2)]
+```
+
+### Exploratory analysis
+
+1. Summary
+
+```{r, echo=FALSE}
+summary(df)
+```
+
+2. Plot of distribution
+
+```{r, echo=FALSE}
+plot(df)
+```
+
+3. Correlation Summary
+
+```{r, echo=FALSE}
+cor(df)
+```
+
+4. Plot two Comparisons
+
+```{r, echo=FALSE}
+par(mfrow=c(1,2))
+plot(df$Alcance ~ df$Resultados)
+plot(df$Resultados ~ df$Valor.gasto..BRL.)
+```
+
+### Remove or not the Outliers
+
+```{r, echo=FALSE}
+df <- df[-c(17,42),] ## Outliers
+```
+
+### Regression Model
+
+```{r, echo=FALSE}
+model <- lm(df$Resultados ~ df$Valor.gasto..BRL.)
+teste <- data.frame(x=names[-c(17,42)])
+predict <- predict(model, teste)
+
+plot(df$Valor.gasto..BRL., 
+     df$Resultados, 
+     xlab = "Valor gasto na Campanha (R$)",
+     ylab = "Clicks em Links",
+     type = "p",
+     col = "blue",
+     pch=1,
+     cex=1.5,
+     main = "Regression Model for Facebook")
+points(df$Valor.gasto..BRL., predict, type="p", col="red", pch=4)
+abline(model, lwd=1, col='red')
+legend("topright", c("y", "y_estimado"), pch=c(1,4), col=c("blue", "red"))
+```
+
+### Residuals analysis
+
+```{r, echo=FALSE}
+plot(model)
+summary(model)
+```
+
